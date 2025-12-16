@@ -7,23 +7,23 @@ class ProductManager {
 		this.products = [];
 	}
 
-	addProduct(tittle, description, price, thumbnail, code, stock) {
-		const product = {
+	addProduct(product) {
+		const newProduct = {
 			id: this.products.length + 1,
-			tittle,
-			description,
-			price,
-			thumbnail,
-			code,
-			stock,
+			tittle: product.tittle,
+			description: product.description,
+			price: product.price,
+			thumbnail: product.thumbnail,
+			code: product.code,
+			stock: product.stock,
 		};
 
-		if (Object.values(product).includes(undefined)) {
+		if (Object.values(newProduct).includes(undefined)) {
 			alert('Todos los campos son obligatorios');
-		} else if (Object.values(product).includes(code)) {
+		} else if (this.getProducts().find((p) => p.code === newProduct.code)) {
 			alert('El codigo ingresado corresponde a otro producto');
 		} else {
-			this.products.push(product);
+			this.products.push(newProduct);
 		}
 	}
 
