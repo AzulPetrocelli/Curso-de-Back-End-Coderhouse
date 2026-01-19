@@ -1,14 +1,16 @@
 //SERVER BASICO CON HTTP
+
+//importacion de tipo commonjs
 const http = require('http');
 
 // Crear un servidor HTTP básico
-const server = http.createServer((require, response) => {
+const server = http.createServer((request, response) => {
 	response.end('The server is running');
 });
 
-// Escuchar en el puerto 3000
-server.listen(3000, () => {
-	console.log('Server is listening on port 3000');
+// Escuchar en el puerto 8080
+server.listen(8080, () => {
+	console.log('Server is listening on port 8080');
 });
 
 /*

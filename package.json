@@ -1,10 +1,11 @@
 {
 	"devDependencies": {
+		"nodemon": "^3.1.11",
 		"prettier": "^3.7.4"
 	},
 	"scripts": {
-		"start": "node server.js",
-		"dev": "nodemon server.js"
+		"start": "node src/Clase-4/httpServer.js",
+		"dev": "nodemon src/Clase-4/expressServer.js"
 	},
 	"dependencies": {
 		"express": "^5.2.1",
