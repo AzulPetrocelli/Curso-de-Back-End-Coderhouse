@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "3745a772-962d-4587-a05d-527a8c1efb90",
+		"name": "TP1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45660268",
+		"_collection_link": "https://azul-3056462.postman.co/workspace/Azul's-Workspace~21eea696-cf79-49e5-8863-134951a3af68/collection/45660268-3745a772-962d-4587-a05d-527a8c1efb90?action=share&source=collection_link&creator=45660268"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/products/51",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"products",
+								"51"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/products/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"title\":\"Coca\",\n    \"description\":\"Muy rica\",\n    \"price\": 3000,\n    \"status\":true,\n    \"code\":\"MM2\",\n    \"stock\": 20,\n    \"category\": \"bebida\",\n    \"thumbnails\": [\"/home/images\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/products/",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"products",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"title\":\"Coca\",\n    \"description\":\"Muy Fea y muy cara\",\n    \"price\": 3000,\n    \"status\":true,\n    \"code\":\"MM2\",\n    \"stock\": 20,\n    \"category\": \"bebida\",\n    \"thumbnails\": [\"/home/images\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/products/51",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"products",
+								"51"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"title\":\"Coca\",\n    \"description\":\"Muy Fea y muy cara\",\n    \"price\": 3000,\n    \"status\":true,\n    \"code\":\"MM2\",\n    \"stock\": 20,\n    \"category\": \"bebida\",\n    \"thumbnails\": [\"/home/images\"]\n}"
+						},
+						"url": {
+							"raw": "{{BASEURL}}/products/51",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"products",
+								"51"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Get Cart By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/carts/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"carts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"product\": 1,\n  \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/carts/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"carts",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Product To Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/carts/1/product/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"carts",
+								"1",
+								"product",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASEURL",
+			"value": ""
+		},
+		{
+			"value": ""
+		}
+	]
+}
