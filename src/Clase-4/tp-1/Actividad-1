@@ -34,17 +34,16 @@ category: String
 
 thumbnails: Array de Strings (rutas donde están almacenadas las imágenes del producto).
 
-PUT /:pid:
+PUT /api/products/:pid:
 Debe actualizar un producto por los campos enviados desde el body. No se debe actualizar ni eliminar el id al momento de hacer la actualización.
 
-DELETE /:pid:
+DELETE /api/products/:pid:
 Debe eliminar el producto con el pid indicado.
 
 Rutas para Manejo de Carritos (/api/carts/)
 POST /:
 Debe crear un nuevo carrito con la siguiente estructura:
 id: Number/String (Autogenerado para asegurar que nunca se dupliquen los ids).
-
 products: Array que contendrá objetos que representen cada producto.
 
 GET /:cid:

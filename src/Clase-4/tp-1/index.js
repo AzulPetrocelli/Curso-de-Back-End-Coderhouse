@@ -1,9 +1,13 @@
+//Modulo Express
 import express from 'express';
 
+//Archivos JSON
+import carts from "./carts.json" with { type: "json" };
+import products from "./products.json" with { type: "json" };
+
+//Servidor
 const server = express();
 const PORT = 8080;
-
-let products = [];
 
 //==========================================================
 // MANEJO DE PRODUCTOS
@@ -11,27 +15,34 @@ let products = [];
 
 //Clase ProductManager
 class ProductManager {
-	constructor() {
-		this.products = [];
+	constructor(products) {
+		this.products = products;
 	}
+
+    everyFieldIsDefined(product) {
+        return Object.values(product).every((value) => value !== undefined);
+    }
 
 	addProduct(product) {
 		const newProduct = {
 			id: this.products.length + 1,
-			tittle: product.tittle,
+			title: product.title,
 			description: product.description,
 			price: product.price,
-			thumbnail: product.thumbnail,
 			code: product.code,
 			stock: product.stock,
+            status: product.status,
+            category: product.category,
+            thumbnails: product.thumbnails
 		};
 
-		if (Object.values(newProduct).includes(undefined)) {
-			alert('Todos los campos son obligatorios');
-		} else if (this.getProducts().find((p) => p.code === newProduct.code)) {
-			alert('El codigo ingresado corresponde a otro producto');
+		if (!this.everyFieldIsDefined(newProduct)) {
+			return { error: 'Todos los campos son obligatorios', status: 400 };
+		} else if (this.products.find((p) => p.code === newProduct.code)) {
+			return { error: 'El codigo ingresado corresponde a otro producto', status: 400 };
 		} else {
 			this.products.push(newProduct);
+            return { product: newProduct, status: 201 };
 		}
 	}
 
@@ -49,26 +60,51 @@ class ProductManager {
 
 		return this.products.find((product) => product.id === id);
 	}
+
+    patchProduct(id, product) {
+        const index = this.products.findIndex((product) => product.id === id);
+
+        if (index === -1) {
+            return { error: 'Product not found', status: 404 };
+        } else {
+            // Updated validation logic if needed, or just update
+             this.products[index] = { ...this.products[index], ...product };
+            return { product: this.products[index], status: 200 };
+        }
+    }
+
+    deleteProduct(id) {
+        const index = this.products.findIndex((product) => product.id === id);
+
+        if (index === -1) {
+             return { error: 'Product not found', status: 404 };
+        } else {
+            const deletedProduct = this.products[index];
+            this.products.splice(index, 1);
+            return { product: deletedProduct, status: 200 };
+        }
+    }
 }
 
+const productManager = new ProductManager(products);
 
 //Retorna todos los productos
 server.get('/api/products/', (req, res) => {
-    res.json({products});
+    const products = productManager.getProducts();
+    res.json(products);
 });
 
 //Retorna un porducto segun su id
 server.get('/api/products/:pid', (req, res) => {
     const { pid } = req.params;
 
-    const result = products.find((product) => product.id === parseInt(pid));
+    const result = productManager.getProductById(parseInt(pid));
 
     if (result) {
-        res.json({product:result});
+        res.status(200).json({product:result});
     } else {
         res.status(404).send('Product not found');
     }
-    
 });
 
 //Agrega un producto
@@ -76,61 +112,45 @@ server.post('/api/products/', (req, res) => {
     const { title, description, code, price, status, stock, category, thumbnails } = req.body;
 
     const newProduct = {
-        id: products.length + 1,
         title,
         description,
-        code,
         price,
         status,
+        code,
         stock,
         category,
         thumbnails
     };
 
-    products.push(newProduct);
-    res.json({product:newProduct});
+    const result = productManager.addProduct(newProduct);
+    if (result.error) {
+        res.status(result.status).send(result.error);
+    } else {
+        res.status(result.status).json(result.product);
+    }
 });
 
 //Actualiza un producto
 server.put('/api/products/:pid', (req, res) => {
-    const { title, description, code, price, status, stock, category, thumbnails } = req.body;
     const { pid } = req.params;
+    const  product = req.body;
 
-    const index = products.findIndex(p => parseInt(p.id) === parseInt(pid));
-    const productToEdit = products[index];
-    
-    if (!productToEdit) {
-        return res.status(404).send('Product not found');
-    }else{
-        //Edita los campos que sean distinto de undefined
-        productToEdit.title = title || productToEdit.title;
-        productToEdit.description = description || productToEdit.description;
-        productToEdit.code = code || productToEdit.code;
-        productToEdit.price = price || productToEdit.price;
-        productToEdit.status = status || productToEdit.status;
-        productToEdit.stock = stock || productToEdit.stock;
-        productToEdit.category = category || productToEdit.category;
-        productToEdit.thumbnails = thumbnails || productToEdit.thumbnails;
-        
-        products[index] = productToEdit;
-        
-        res.json({product:productToEdit});
+    const result = productManager.patchProduct(parseInt(pid), product);
+     if (result.error) {
+        res.status(result.status).send(result.error);
+    } else {
+        res.status(result.status).json(result.product);
     }
-
 });
 
 //Elimina un producto
 server.delete('/api/products/:pid', (req, res) => {
     const { pid } = req.params;
-
-    const index = products.findIndex(p => parseInt(p.id) === parseInt(pid));
-    const productToDelete = products[index];
-    
-    if (!productToDelete) {
-        res.status(404).send('Product not found');
+    const result = productManager.deleteProduct(parseInt(pid));
+    if (result.error) {
+        res.status(result.status).send(result.error);
     } else {
-        products.splice(index, 1);
-        res.json({product_deleted:productToDelete});
+        res.status(result.status).json(result.product);
     }
 });
 
@@ -139,21 +159,30 @@ server.delete('/api/products/:pid', (req, res) => {
 //==========================================================
 
 class CartManager {
-    constructor () {
-        this.carts = [];
+    constructor (carts) {
+        this.carts = carts;
     }
 
-    createCart() {
+    createCart(products) {
         const newCart = {
             id: this.carts.length + 1,
-            products: []
+            products: products || []
         };
         this.carts.push(newCart);
-        return newCart;
+        return {cart:newCart, status:200};
     }
 
     getCartById(id) {
-        return this.carts.find((cart) => cart.id === id);
+        const cart = this.carts.find((cart) => cart.id === id);
+        if (cart) {
+            return {cart:cart, status:200};
+        } else {
+            return {error:'Cart not found', status:404};
+        }
+    }
+
+    getProductsCartById(id) {
+        return this.carts.find((cart) => cart.id === id).products;
     }
 
     addProductToCart(cartId, productId) {
@@ -175,53 +204,58 @@ class CartManager {
             return 'Cart not found';
         }
     }
+
+    patchProductInCart(cartId, productId) {
+        const cart = this.getCartById(cartId);
+        if (cart) {
+            const productIndex = cart.products.findIndex((product) => product.product.id === productId);
+            if (productIndex !== -1) {
+                cart.products[productIndex].quantity++;
+                return {product: cart.products[productIndex], status: 200};
+            } else {
+                return {error: 'Product not found', status: 404};
+            }
+        } else {
+            return {error: 'Cart not found', status: 404};
+        }
+    }
 }
+
+const cartManager = new CartManager(carts);
 
 //Crea un nuevo carrito
 server.post('/api/carts/', (req, res) => {
     const { products } = req.body;
     
-    const newCart = {
-        id: carts.length + 1,
-        products: products || []
-    };
-    carts.push(newCart);
-    res.json({cart:newCart});
+    const result = cartManager.createCart(products);
+    if (result.error) {
+        res.status(result.status).send(result.error);
+    } else {
+        res.status(result.status).json(result.cart);
+    }
 });
 
 //Retorna los productos de un carrito segun su id
 server.get('/api/carts/:cid', (req, res) => {
     const { cid } = req.params;
-    const result = carts.find((cart) => cart.id === parseInt(cid));
-    if (result) {
-        res.json({product_cart:result.products});
+    const result = cartManager.getCartById(parseInt(cid));
+    if (result.error) {
+        res.status(result.status).send(result.error);
     } else {
-        res.status(404).send('Cart not found');
+        res.status(result.status).json(result.cart);
     }
 });
 
 //Agrega un producto a un carrito
 server.post('/api/carts/:cid/product/:pid', (req, res) => {
     const { cid, pid } = req.params;
-    const cart = carts.find((cart) => cart.id === parseInt(cid));
-    if (cart) {
-        const product = products.find((product) => product.id === parseInt(pid));
-        if (product) {
-            const productInCartIndex = cart.products.findIndex((p) => p.product.id === parseInt(pid));
-            if (productInCartIndex !== -1) {
-                cart.products[productInCartIndex] = {product: pid, quantity: cart.products[productInCartIndex].quantity + 1};
-            } else {
-                cart.products.push({product: pid, quantity: 1});
-            }
-            
-            res.json({products_cart:cart.products});
-        } else {
-            res.status(404).send('Product not found');
-        }
+    const result = cartManager.addProductToCart(parseInt(cid), parseInt(pid));
+    if (result.error) {
+        res.status(result.status).send(result.error);
     } else {
-        res.status(404).send('Cart not found');
+        res.status(result.status).json(result.product);
     }
-});
+});    
 
 //Escucha el puerto
 server.listen(PORT, () => {
