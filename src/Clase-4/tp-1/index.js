@@ -9,6 +9,9 @@ import products from "./products.json" with { type: "json" };
 const server = express();
 const PORT = 8080;
 
+server.use(express.json());
+server.use(express.urlencoded({extended: true}));
+
 //==========================================================
 // MANEJO DE PRODUCTOS
 //==========================================================
