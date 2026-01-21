@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3745a772-962d-4587-a05d-527a8c1efb90",
+		"_postman_id": "d0f56b2b-d98e-4563-a007-6be700c52bd0",
 		"name": "TP1",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "45660268",
-		"_collection_link": "https://azul-3056462.postman.co/workspace/Azul's-Workspace~21eea696-cf79-49e5-8863-134951a3af68/collection/45660268-3745a772-962d-4587-a05d-527a8c1efb90?action=share&source=collection_link&creator=45660268"
+		"_exporter_id": "20953138"
 	},
 	"item": [
 		{
@@ -16,13 +15,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASEURL}}/products/51",
+							"raw": "{{BASEURL}}/products",
 							"host": [
 								"{{BASEURL}}"
 							],
 							"path": [
-								"products",
-								"51"
+								"products"
 							]
 						}
 					},
