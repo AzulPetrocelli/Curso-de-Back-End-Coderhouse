@@ -26,22 +26,23 @@ export class CartManager {
     }
 
     addProductToCart(cartId, productId) {
-        const cart = this.getCartById(cartId);
+        const cart = this.getCartById(cartId).cart;
         if (cart) {
-            const product = products.find((product) => product.id === productId);
+            const product = cart.products.find((product) => product.product === productId);
             if (product) {
-                const productInCartIndex = cart.products.findIndex((p) => p.product.id === productId);
+                const productInCartIndex = cart.products.findIndex((p) => p.product === productId);
                 if (productInCartIndex !== -1) {
                     cart.products[productInCartIndex] = {product: productId, quantity: cart.products[productInCartIndex].quantity + 1};
                 } else {
                     cart.products.push({product: productId, quantity: 1});
                 }
-                return cart.products;
+
+                return {product: cart.products, status: 200};
             } else {
-                return 'Product not found';
+                return {error: 'Product not found', status: 404};
             }
         } else {
-            return 'Cart not found';
+            return {error: 'Cart not found', status: 404};
         }
     }
 

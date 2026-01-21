@@ -32,13 +32,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASEURL}}/products/1",
+							"raw": "{{BASEURL}}/products/51",
 							"host": [
 								"{{BASEURL}}"
 							],
 							"path": [
 								"products",
-								"1"
+								"51"
 							]
 						}
 					},
@@ -51,7 +51,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": " {\n    \"title\":\"Coca\",\n    \"description\":\"Muy rica\",\n    \"price\": 3000,\n    \"status\":true,\n    \"code\":\"MM2\",\n    \"stock\": 20,\n    \"category\": \"bebida\",\n    \"thumbnails\": [\"/home/images\"]\n}",
+							"raw": " {\n    \"title\":\"Coca\",\n    \"description\":\"Muy fea\",\n    \"price\": 3000,\n    \"status\":true,\n    \"code\":\"MM24\",\n    \"stock\": 20,\n    \"category\": \"bebida\",\n    \"thumbnails\": [\"/home/images\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -192,7 +192,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASEURL}}/carts/1/product/1",
+							"raw": "{{BASEURL}}/carts/1/product/51",
 							"host": [
 								"{{BASEURL}}"
 							],
@@ -200,7 +200,7 @@
 								"carts",
 								"1",
 								"product",
-								"1"
+								"51"
 							]
 						}
 					},
