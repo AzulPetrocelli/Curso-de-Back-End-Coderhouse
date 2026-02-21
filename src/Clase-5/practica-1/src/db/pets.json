@@ -1,0 +1,38 @@
+[
+	{
+		"name": "perrito",
+		"age": "1",
+		"type": "caniche",
+		"adopted": false
+	},
+	{
+		"name": "perrito",
+		"age": "2",
+		"type": "caniche",
+		"adopted": false
+	},
+	{
+		"name": "perrito",
+		"age": "2",
+		"type": "caniche",
+		"adopted": false
+	},
+	{
+		"name": "perrito",
+		"age": "2",
+		"type": "caniche",
+		"adopted": false
+	},
+	{
+		"name": "perrito",
+		"age": "2",
+		"type": "caniche",
+		"adopted": false
+	},
+	{
+		"name": "perrito",
+		"age": "2",
+		"type": "caniche",
+		"adopted": false
+	}
+]

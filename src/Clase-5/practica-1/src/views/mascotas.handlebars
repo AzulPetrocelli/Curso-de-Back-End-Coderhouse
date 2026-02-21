@@ -1,0 +1,31 @@
+<html>
+	<head>
+		<meta charset='UTF-8' />
+		<title>Mascota</title>
+	</head>
+	<body>
+		<h1>Información de las Mascotas</h1>
+
+		{{#if pets.length}}
+			<h2>Lista de mascotas disponibles para adopción:</h2>
+			{{#each pets}}
+				<div>
+					<p><strong>Nombre:</strong> {{this.name}}</p>
+					<p><strong>Edad:</strong> {{this.age}}</p>
+					<p><strong>Tipo:</strong> {{this.type}}</p>
+					<p><strong>Estado de adopcion:</strong>
+						{{#if this.adopted}}
+							Disponible
+						{{else}}
+							No disponible
+						{{/if}}
+					</p>
+					{{!-- <p><strong>Adoptado:</strong> {{this.adopted ? 'Sí' : 'No'}}</p> --}}
+				</div>
+				<br />
+			{{/each}}
+		{{else}}
+			<h2>No hay mascotas disponibles para adopción en este momento.</h2>
+		{{/if}}
+	</body>
+</html>
